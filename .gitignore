@@ -3,3 +3,12 @@
 # Package Files #
 *.war
 *.ear
+
+.gradle/
+.idea/
+build/
+
+# idea project file
+*.iml
+*.ipr
+*.iws
