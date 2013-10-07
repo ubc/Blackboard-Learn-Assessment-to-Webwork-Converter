@@ -36,5 +36,10 @@ public class Question {
 	{
 		this.formula = formula;
 	}
+	
+	public void addVariable(Variable var)
+	{
+		formulaVars.put(var.getName(), var);
+	}
 
 }

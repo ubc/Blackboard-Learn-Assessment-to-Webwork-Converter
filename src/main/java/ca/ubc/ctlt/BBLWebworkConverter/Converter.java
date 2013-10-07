@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Question;
+import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Variable;
 import ca.ubc.ctlt.BBLWebworkConverter.BlackboardParser.BlackboardParser;
 
 public class Converter
@@ -28,5 +29,16 @@ public class Converter
 		// parse the file into intermediate Assessment data structure
 		BlackboardParser parser = new BlackboardParser(file);
 		List<Question> questions = parser.getQuestions();
+		for (Question q : questions)
+		{
+			System.out.println("Question: ");
+			System.out.println(q.getText());
+			System.out.println(q.getType());
+			System.out.println(q.getFormula());
+			for (Variable v : q.getFormulaVars().values())
+			{
+				System.out.println(v.getName() + " - Max: " + v.getMax() + " Min: " + v.getMin() + " Sig: " + v.getSignificantDigit());
+			}
+		}
 	}
 }

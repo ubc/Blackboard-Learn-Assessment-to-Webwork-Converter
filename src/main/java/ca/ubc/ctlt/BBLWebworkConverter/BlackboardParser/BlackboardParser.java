@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Question;
+import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Variable;
 import fmath.conversion.ConvertFromMathMLToLatex;
 
 import nu.xom.Builder;
@@ -93,6 +94,8 @@ public class BlackboardParser
 					parseItemprocExtension(question, tmpElem);
 				}
 			}
+			
+			questions.add(question);
 		}
 		
 		return questions;
@@ -139,7 +142,8 @@ public class BlackboardParser
 		for (int i = 0; i < calculated.getChildCount(); i++)
 		{
 			Element child = (Element) calculated.getChild(i);
-			if (child.getQualifiedName().equals("formula"))
+			String name = child.getQualifiedName();
+			if (name.equals("formula"))
 			{
 				String formula = child.getValue();
 				formula = formula.replace(" xmlns=\"http://www.w3.org/1998/Math/MathML\"", "");	// fmath converter doesn't like xmlns
@@ -147,7 +151,49 @@ public class BlackboardParser
 				formula = ConvertFromMathMLToLatex.convertToLatex(formula);
 				question.setFormula(formula);
 			}
+			else if (name.equals("vars"))
+			{
+				parseVars(question, child);
+			}
 		}
-
+	}
+	
+	private void parseVars(Question question, Element vars)
+	{
+		// get the variables being used in the formula and the range that they're to be generated in
+		for (int i = 0; i < vars.getChildCount(); i++)
+		{
+			Element var = (Element) vars.getChild(i);
+			// variable information
+			String varName = var.getAttributeValue("name");
+			int varScale = Integer.parseInt(var.getAttributeValue("scale")); // AKA significant digit
+			// variable range
+			Element min = null;
+			Element max = null;
+			for (int j = 0; j < var.getChildCount(); j++)
+			{
+				Element tmp = (Element) var.getChild(j);
+				String name = tmp.getQualifiedName();
+				if (name.equals("min"))
+				{
+					min = tmp;
+				}
+				else if (name.equals("max"))
+				{
+					max = tmp;
+				}
+				else
+				{
+					System.out.println("Warning: Did not find variable min or max");
+				}
+			}
+			// create and add the variable to question
+			Variable variable = new Variable();
+			variable.setName(varName);
+			variable.setSignificantDigit(varScale);
+			variable.setMax(Double.parseDouble(max.getValue()));
+			variable.setMin(Double.parseDouble(min.getValue()));
+			question.addVariable(variable);
+		}
 	}
 }
