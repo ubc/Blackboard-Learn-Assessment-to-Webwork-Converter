@@ -7,16 +7,7 @@ public class Question {
 	private String type;
 	private String text;
 	private String formula;
-	private HashMap<String, Variable> formulaVars;
-
-	public Question(String type, String text, String formula,
-			HashMap<String, Variable> formulaVars) {
-		super();
-		this.type = type;
-		this.text = text;
-		this.formula = formula;
-		this.formulaVars = formulaVars;
-	}
+	private HashMap<String, Variable> formulaVars = new HashMap<String, Variable>();
 
 	public String getType() {
 		return type;
@@ -29,6 +20,21 @@ public class Question {
 	}
 	public HashMap<String, Variable> getFormulaVars() {
 		return formulaVars;
+	}
+
+	public void setType(String type)
+	{
+		this.type = type;
+	}
+
+	public void setText(String text)
+	{
+		this.text = text;
+	}
+
+	public void setFormula(String formula)
+	{
+		this.formula = formula;
 	}
 
 }
