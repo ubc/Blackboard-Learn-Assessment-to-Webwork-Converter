@@ -155,6 +155,23 @@ public class BlackboardParser
 			{
 				parseVars(question, child);
 			}
+			else if (name.equals("answer_tolerance"))
+			{
+				String toleranceType = child.getAttributeValue("type");
+				if (toleranceType.equals(Question.ANSWER_TOLERANCE_NUMERIC))
+				{
+					question.setAnswerToleranceType(Question.ANSWER_TOLERANCE_NUMERIC);
+				}
+				else if (toleranceType.equals(Question.ANSWER_TOLERANCE_PERCENT))
+				{
+					question.setAnswerToleranceType(Question.ANSWER_TOLERANCE_PERCENT);
+				}
+				else
+				{
+					System.out.println("Warning: Unknown answer tolerance type");
+				}
+				question.setAnswerTolerance(Double.parseDouble(child.getValue()));
+			}
 		}
 	}
 	

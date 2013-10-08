@@ -32,12 +32,14 @@ public class Converter
 		for (Question q : questions)
 		{
 			System.out.println("Question: ");
-			System.out.println(q.getText());
-			System.out.println(q.getType());
-			System.out.println(q.getFormula());
+			System.out.println(" Text: " + q.getText());
+			System.out.println(" Type: " + q.getType());
+			System.out.println(" Formula: " + q.getFormula());
+			System.out.println(" Answer Tolerance: " + q.getAnswerToleranceType() + " " + q.getAnswerTolerance());
+			System.out.println(" Variables: ");
 			for (Variable v : q.getFormulaVars().values())
 			{
-				System.out.println(v.getName() + " - Max: " + v.getMax() + " Min: " + v.getMin() + " Sig: " + v.getSignificantDigit());
+				System.out.println("  " + v.getName() + " - Max: " + v.getMax() + " Min: " + v.getMin() + " Sig: " + v.getSignificantDigit());
 			}
 		}
 	}
