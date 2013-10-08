@@ -39,7 +39,7 @@ public class Converter
 			System.out.println(" Variables: ");
 			for (Variable v : q.getFormulaVars().values())
 			{
-				System.out.println("  " + v.getName() + " - Max: " + v.getMax() + " Min: " + v.getMin() + " Sig: " + v.getSignificantDigit());
+				System.out.println("  " + v.getName() + " - Max: " + v.getMax() + " Min: " + v.getMin() + " Sig: " + v.getDecimalPlaces());
 			}
 		}
 	}

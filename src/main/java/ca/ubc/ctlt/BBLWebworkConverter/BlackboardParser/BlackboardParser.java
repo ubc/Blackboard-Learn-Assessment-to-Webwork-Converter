@@ -207,7 +207,7 @@ public class BlackboardParser
 			// create and add the variable to question
 			Variable variable = new Variable();
 			variable.setName(varName);
-			variable.setSignificantDigit(varScale);
+			variable.setDecimalPlaces(varScale);
 			variable.setMax(Double.parseDouble(max.getValue()));
 			variable.setMin(Double.parseDouble(min.getValue()));
 			question.addVariable(variable);

@@ -7,16 +7,16 @@ public class Variable {
 	private String name;
 	private double min;
 	private double max;
-	private int significantDigit;
+	private int decimalPlaces;
 	
-	public int getSignificantDigit()
+	public int getDecimalPlaces()
 	{
-		return significantDigit;
+		return decimalPlaces;
 	}
 
-	public void setSignificantDigit(int significantDigit)
+	public void setDecimalPlaces(int decimalPlaces)
 	{
-		this.significantDigit = significantDigit;
+		this.decimalPlaces = decimalPlaces;
 	}
 
 	public void setName(String name)
