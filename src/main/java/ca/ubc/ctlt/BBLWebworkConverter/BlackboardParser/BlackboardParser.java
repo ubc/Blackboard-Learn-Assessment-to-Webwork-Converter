@@ -172,6 +172,11 @@ public class BlackboardParser
 				}
 				question.setAnswerTolerance(Double.parseDouble(child.getValue()));
 			}
+			else if (name.equals("answer_scale"))
+			{
+				int decimalPlace = Integer.parseInt(child.getValue());
+				question.setAnswerDecimalPlaces(decimalPlace);
+			}
 		}
 	}
 	

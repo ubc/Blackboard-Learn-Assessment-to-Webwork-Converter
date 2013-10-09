@@ -12,6 +12,7 @@ public class Question {
 	private String formula;
 	private String answerToleranceType; // this should be either the NUMERIC or PERCENT constants
 	private double answerTolerance;
+	private int answerDecimalPlaces;
 	private HashMap<String, Variable> formulaVars = new HashMap<String, Variable>();
 
 	public String getType() {
@@ -61,6 +62,14 @@ public class Question {
 	public void setAnswerTolerance(double answerTolerance)
 	{
 		this.answerTolerance = answerTolerance;
+	}
+	public int getAnswerDecimalPlaces()
+	{
+		return answerDecimalPlaces;
+	}
+	public void setAnswerDecimalPlaces(int answerDecimalPlaces)
+	{
+		this.answerDecimalPlaces = answerDecimalPlaces;
 	}
 
 }

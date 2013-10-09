@@ -36,10 +36,11 @@ public class Converter
 			System.out.println(" Type: " + q.getType());
 			System.out.println(" Formula: " + q.getFormula());
 			System.out.println(" Answer Tolerance: " + q.getAnswerToleranceType() + " " + q.getAnswerTolerance());
+			System.out.println(" Answer Decimal Place: " + q.getAnswerDecimalPlaces());
 			System.out.println(" Variables: ");
 			for (Variable v : q.getFormulaVars().values())
 			{
-				System.out.println("  " + v.getName() + " - Max: " + v.getMax() + " Min: " + v.getMin() + " Sig: " + v.getDecimalPlaces());
+				System.out.println("  " + v.getName() + " - Max: " + v.getMax() + " Min: " + v.getMin() + " Decimal Place: " + v.getDecimalPlaces());
 			}
 		}
 	}
