@@ -15,6 +15,10 @@ public class FormulaParser
 	 * latex commands that don't have a direct mapping from latex to ascii
 	 */
 	public final static String[] NONDIRECTMAP = {"frac", "sqrt", "left", "right"};
+	/**
+	 * unsupported functions, no equivalent in webwork
+	 */
+	public final static String[] UNSUPPORTED = {"round"};
 	
 	
 	/**
@@ -54,6 +58,16 @@ public class FormulaParser
 
 		// convert sqrt and roots with other bases
 		formula = parseSqrt(formula);
+		
+		// check for unsupported functions
+		for (String func : UNSUPPORTED)
+		{
+			if (formula.contains(func))
+			{
+				System.out.println("Unsupported function " + func + "() found, cannot convert.");
+				throw new RuntimeException("Unsupported function " + func + "() found in formula, cannot convert.");
+			}
+		}
 
 		return formula;
 	}
