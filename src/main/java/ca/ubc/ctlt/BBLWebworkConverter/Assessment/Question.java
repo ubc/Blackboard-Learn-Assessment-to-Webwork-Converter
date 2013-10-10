@@ -9,7 +9,8 @@ public class Question {
 	
 	private String type; // if we're working only with Calculated questions, then this field is useless, but kept just in case
 	private String text;
-	private String formula;
+	private String formulaLatex;
+	private String formulaAscii;
 	private String answerToleranceType; // this should be either the NUMERIC or PERCENT constants
 	private double answerTolerance;
 	private int answerDecimalPlaces;
@@ -21,8 +22,11 @@ public class Question {
 	public String getText() {
 		return text;
 	}
-	public String getFormula() {
-		return formula;
+	public String getFormulaLatex() {
+		return formulaLatex;
+	}
+	public String getFormulaAscii() {
+		return formulaAscii;
 	}
 	public HashMap<String, Variable> getFormulaVars() {
 		return formulaVars;
@@ -38,9 +42,9 @@ public class Question {
 		this.text = text;
 	}
 
-	public void setFormula(String formula)
+	public void setFormulaLatex(String formula)
 	{
-		this.formula = formula;
+		this.formulaLatex = formula;
 	}
 	
 	public void addVariable(Variable var)
@@ -70,6 +74,10 @@ public class Question {
 	public void setAnswerDecimalPlaces(int answerDecimalPlaces)
 	{
 		this.answerDecimalPlaces = answerDecimalPlaces;
+	}
+	public void setFormulaAscii(String formulaAscii)
+	{
+		this.formulaAscii = formulaAscii;
 	}
 
 }

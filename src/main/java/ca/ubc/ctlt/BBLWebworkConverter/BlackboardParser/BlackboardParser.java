@@ -149,11 +149,12 @@ public class BlackboardParser
 				formula = formula.replace(" xmlns=\"http://www.w3.org/1998/Math/MathML\"", "");	// fmath converter doesn't like xmlns
 				formula = StringEscapeUtils.unescapeHtml4(formula); // convert html entities back into regular characters
 				formula = ConvertFromMathMLToLatex.convertToLatex(formula);
-				question.setFormula(formula);
+				question.setFormulaLatex(formula);
 			}
 			else if (name.equals("vars"))
 			{
 				parseVars(question, child);
+				question.setFormulaAscii(FormulaParser.parseToAsciiMath(question));
 			}
 			else if (name.equals("answer_tolerance"))
 			{

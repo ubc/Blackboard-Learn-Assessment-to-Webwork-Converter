@@ -34,7 +34,8 @@ public class Converter
 			System.out.println("Question: ");
 			System.out.println(" Text: " + q.getText());
 			System.out.println(" Type: " + q.getType());
-			System.out.println(" Formula: " + q.getFormula());
+			System.out.println(" Latex Formula: " + q.getFormulaLatex());
+			System.out.println(" Ascii Formula: " + q.getFormulaAscii());
 			System.out.println(" Answer Tolerance: " + q.getAnswerToleranceType() + " " + q.getAnswerTolerance());
 			System.out.println(" Answer Decimal Place: " + q.getAnswerDecimalPlaces());
 			System.out.println(" Variables: ");
