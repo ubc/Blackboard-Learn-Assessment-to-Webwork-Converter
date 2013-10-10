@@ -10,6 +10,7 @@ import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Question;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.QuestionTypes;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Variable;
 import ca.ubc.ctlt.BBLWebworkConverter.BlackboardParser.BlackboardParser;
+import ca.ubc.ctlt.BBLWebworkConverter.PGGenerator.PGGenerator;
 
 public class Converter
 {
@@ -63,6 +64,20 @@ public class Converter
 				}
 				
 			}
-		}
+
+            // generate question
+            PGGenerator generator = new PGGenerator();
+            HtmlTexConverter converter = new HtmlTexConverter();
+            generator.setText(converter.convert(q.getText()));
+            generator.setAnswer(q.getFormulaAscii());
+            generator.setVariables(q.getFormulaVars());
+            generator.addMacor("PGstandard.pl");
+            generator.addMacor("MathObjects.pl");
+            generator.addMacor("PGML.pl");
+            generator.addMacor("PGcourse.pl");
+
+            System.out.println(generator.generate());
+            System.out.println("----------------   end of problem --------------");
+        }
 	}
 }
