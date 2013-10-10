@@ -59,6 +59,9 @@ public class FormulaParser
 		// convert sqrt and roots with other bases
 		formula = parseSqrt(formula);
 		
+		// remove extra spacing from decimal numbers
+		formula = removeExtraSpacingFromDecimals(formula);
+		
 		// check for unsupported functions
 		for (String func : UNSUPPORTED)
 		{
@@ -69,6 +72,27 @@ public class FormulaParser
 			}
 		}
 
+		return formula;
+	}
+	
+	/**
+	 * Decimal numbers, e.g.: 5.1, gets additional spaces after conversion, so they look more like "5 . 1", this method
+	 * will remove the extra spaces.
+	 * 
+	 * @return
+	 */
+	private static String removeExtraSpacingFromDecimals(String formula)
+	{
+		String regex = "(\\d+? \\. \\d+?)";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(formula);
+		if (matcher.find())
+		{
+			String decimal = matcher.group(1);
+			decimal = decimal.replace(" ", "");
+			formula = replaceSection(matcher.start(), matcher.end(), formula, decimal);
+			formula = removeExtraSpacingFromDecimals(formula);
+		} 
 		return formula;
 	}
 	

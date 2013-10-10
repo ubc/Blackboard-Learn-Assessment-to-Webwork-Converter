@@ -45,7 +45,7 @@ public class BlackboardParser
 		Element root = doc.getRootElement(); // this should be <questestinterop>
 
 		if (root.getChildCount() != 1)
-		{ // we found more than 1 <assessment>, not sure if it's possible, so just error out
+		{ // we found more than or less than 1 <assessment>, just error out
 			System.out.println("Unexpected number of assessments in data.");
 			return questions;
 		}
