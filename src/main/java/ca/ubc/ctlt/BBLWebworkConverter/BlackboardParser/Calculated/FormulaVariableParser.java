@@ -1,10 +1,12 @@
-package ca.ubc.ctlt.BBLWebworkConverter.BlackboardParser;
+package ca.ubc.ctlt.BBLWebworkConverter.BlackboardParser.Calculated;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import ca.ubc.ctlt.BBLWebworkConverter.BlackboardParser.StringSection;
 
 /**
  * Prefix variables in the formula with $

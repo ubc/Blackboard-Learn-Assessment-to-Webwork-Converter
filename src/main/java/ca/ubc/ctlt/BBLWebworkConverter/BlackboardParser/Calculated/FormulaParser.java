@@ -1,4 +1,4 @@
-package ca.ubc.ctlt.BBLWebworkConverter.BlackboardParser;
+package ca.ubc.ctlt.BBLWebworkConverter.BlackboardParser.Calculated;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

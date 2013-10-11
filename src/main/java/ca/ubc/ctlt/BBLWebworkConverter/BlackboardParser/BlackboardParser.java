@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Question;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Variable;
+import ca.ubc.ctlt.BBLWebworkConverter.BlackboardParser.Calculated.FormulaParser;
 import fmath.conversion.ConvertFromMathMLToLatex;
 
 import nu.xom.Builder;
