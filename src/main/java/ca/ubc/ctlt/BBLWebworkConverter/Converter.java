@@ -66,16 +66,16 @@ public class Converter
 			}
 
             // generate question
-            PGGenerator generator = new PGGenerator();
             HtmlTexConverter converter = new HtmlTexConverter();
-            generator.setText(converter.convert(q.getText()));
-            generator.setAnswer(q.getFormulaAscii());
-            generator.setVariables(q.getFormulaVars());
+            PGGenerator generator = new PGGenerator(q, converter);
             generator.addMacor("PGstandard.pl");
             generator.addMacor("MathObjects.pl");
             generator.addMacor("PGML.pl");
             generator.addMacor("PGcourse.pl");
+            generator.addMacor("PGcourse.pl");
+            generator.addMacor("parserRadioButtons.pl");
 
+            System.out.println("----------------   begin of problem --------------");
             System.out.println(generator.generate());
             System.out.println("----------------   end of problem --------------");
         }

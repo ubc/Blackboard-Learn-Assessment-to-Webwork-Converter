@@ -1,6 +1,8 @@
 package ca.ubc.ctlt.BBLWebworkConverter.PGGenerator;
 
+import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Question;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Variable;
+import ca.ubc.ctlt.BBLWebworkConverter.HtmlTexConverter;
 
 import java.util.*;
 
@@ -11,21 +13,29 @@ public class PGGenerator {
     private Properties tags;
     private List<String> macros;
     private String pgsetup = "";
-    private String text = "";
-    private String answer = "";
     private String solution = "";
-    private Map<String, Variable> variables = new HashMap<String, Variable>();
 
     private int showPartialCorrectAnswers = 1;
     private String pgContext = "Numeric";
     private double tolerance = 0.01;
 
+    private Question question;
+    private HtmlTexConverter converter = null;
+
     private StringBuffer pgText;
     private static final String LF = System.getProperty("line.separator");
 
-    public PGGenerator() {
+    public PGGenerator(Question q) {
         tags = new Properties();
         macros = new ArrayList<String>();
+        question = q;
+    }
+
+    public PGGenerator(Question q, HtmlTexConverter converter) {
+        tags = new Properties();
+        macros = new ArrayList<String>();
+        question = q;
+        this.converter = converter;
     }
 
     public String generate() {
@@ -51,6 +61,10 @@ public class PGGenerator {
             pgText.append(pgsetup + LF + LF);
         }
 
+        if ("Multiple".equals(question.getType())) {
+            pgText.append("$mc = RadioButtons()");
+        }
+
         // problem text and answers
         pgText.append("TEXT(beginproblem());" + LF);
         pgText.append("#####################################" + LF);
@@ -59,11 +73,23 @@ public class PGGenerator {
 
         pgText.append(replaceVariablesForText() + LF);
         pgText.append(LF);
-        pgText.append("[_____________________________]");
-        pgText.append("{\"" + answer + "\"}" + LF);
+
+        // print calculated question response field
+        if ("Calculated".equals(question.getType())) {
+            pgText.append("[_____________________________]");
+            pgText.append("{\"" + question.getFormulaAscii() + "\"}" + LF);
+        }
 
         pgText.append("END_PGML" + LF);
         pgText.append("#####################################" + LF);
+
+        // if the question is multiple choice, we have to use old style, PGML don't support it.
+        if ("Multiple".equals(question.getType())) {
+            pgText.append("BEGIN_TEXT").append(LF);
+            pgText.append("\\{ $mc->buttons() \\}").append(LF);
+            pgText.append("END_TEXT").append(LF);
+            pgText.append("ANS( $mc->cmp() );").append(LF);
+        }
 
         // solution
         if (!solution.isEmpty()) {
@@ -77,8 +103,8 @@ public class PGGenerator {
     }
 
     private String replaceVariablesForText() {
-        String ret = text;
-        for (Map.Entry<String, Variable> entry : variables.entrySet()) {
+        String ret = converter.convert(question.getText());
+        for (Map.Entry<String, Variable> entry : question.getFormulaVars().entrySet()) {
             Variable var = entry.getValue();
             ret = ret.replace("[" + var.getName() + "]", "[$" + var.getName() + "]");
         }
@@ -120,7 +146,7 @@ public class PGGenerator {
     public String printVariables() {
         StringBuffer buffer = new StringBuffer();
 
-        for (Map.Entry<String, Variable> entry : variables.entrySet()) {
+        for (Map.Entry<String, Variable> entry : question.getFormulaVars().entrySet()) {
             Variable var = entry.getValue();
             buffer.append(String.format("$%s = random(%f, %f, %f);" + LF, var.getName(), var.getMin(), var.getMax(), Math.pow(0.1, var.getDecimalPlaces())));
         }
@@ -156,22 +182,6 @@ public class PGGenerator {
         this.pgsetup = pgsetup;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getAnswer() {
-        return answer;
-    }
-
-    public void setAnswer(String answer) {
-        this.answer = answer;
-    }
-
     public String getSolution() {
         return solution;
     }
@@ -202,9 +212,5 @@ public class PGGenerator {
 
     public void setTolerance(double tolerance) {
         this.tolerance = tolerance;
-    }
-
-    public void setVariables(Map<String, Variable> variables) {
-        this.variables = variables;
     }
 }
