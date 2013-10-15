@@ -52,6 +52,9 @@ public class FormulaParser
 		// convert \left. to ( and \right. to )
 		formula = formula.replace("\\left.", "(");
 		formula = formula.replace("\\right.", ")");
+		
+		// convert \#160, the non-breaking space character, to regular space
+		formula = formula.replace("\\#160", " ");
 
 		// convert fraction
 		formula = parseFrac(formula);
