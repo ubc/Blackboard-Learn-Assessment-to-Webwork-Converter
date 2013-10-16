@@ -10,6 +10,7 @@ public class CalculatedQuestion extends Question
 	private double answerTolerance;
 	private int answerDecimalPlaces;
 	private HashMap<String, Variable> formulaVars = new HashMap<String, Variable>();
+	private String unit; // if answers come with units, what unit to expect, e.g.: kg, m, s, etc.
 	
 	public String getFormulaLatex() {
 		return formulaLatex;
@@ -57,6 +58,14 @@ public class CalculatedQuestion extends Question
 	public void setFormulaAscii(String formulaAscii)
 	{
 		this.formulaAscii = formulaAscii;
+	}
+	public String getUnit()
+	{
+		return unit;
+	}
+	public void setUnit(String unit)
+	{
+		this.unit = unit;
 	}
 
 }

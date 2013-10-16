@@ -99,6 +99,14 @@ public class CalculatedParser extends QuestionParser
 				int decimalPlace = Integer.parseInt(child.getValue());
 				getQuestion().setAnswerDecimalPlaces(decimalPlace);
 			}
+			else if (name.equals("unit_value"))
+			{ // store the unit if the formula has one
+				String unit = child.getValue();
+				if (unit != null && !unit.isEmpty())
+				{
+					getQuestion().setUnit(unit);
+				}
+			}
 		}
 	}
 	
