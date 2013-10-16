@@ -5,9 +5,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.ubc.ctlt.BBLWebworkConverter.Assessment.CalculatedQuestion;
+import ca.ubc.ctlt.BBLWebworkConverter.Assessment.MultiChoiceQuestion;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Question;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.QuestionTypes;
 import ca.ubc.ctlt.BBLWebworkConverter.BlackboardParser.Calculated.CalculatedParser;
+import ca.ubc.ctlt.BBLWebworkConverter.BlackboardParser.MultiChoice.MultiChoiceParser;
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
@@ -24,13 +27,10 @@ public class BlackboardParser
 		try {
 			doc = builder.build(file);
 		} catch (ValidityException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ParsingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -72,27 +72,40 @@ public class BlackboardParser
 			{ // don't need to worry about none <item> elements
 				continue;
 			}
-			Question question = new Question();
+			Question question = null;
 			
 			// parsing each question
 			for (int j = 0; j < item.getChildCount(); j++)
 			{
 				Element tmpElem = (Element) item.getChild(j);
 				String elemName = tmpElem.getQualifiedName();
+				String type = "";
 				if (elemName.equals("itemmetadata"))
 				{ // parse the question type
-					parseItemMetadata(question, tmpElem);
+					type = getQuestionType(tmpElem);
+					if (type == null) throw new RuntimeException("Could not find question type");
+				}
+				else
+				{
+					continue;
 				}
 				QuestionParser parser;
-				String type = question.getType();
 				// need to use different parsers depending on the question type
 				if (type.equals(QuestionTypes.CALCULATED))
 				{
-					parser = new CalculatedParser(question, item);
+					CalculatedQuestion cq = new CalculatedQuestion();
+					cq.setType(type);
+					parser = new CalculatedParser(cq, item);
 					parser.parse();
+					question = cq;
 				}
 				else if (type.equals(QuestionTypes.MULTIPLE_CHOICE))
 				{
+					MultiChoiceQuestion mcq = new MultiChoiceQuestion();
+					mcq.setType(type);
+					parser = new MultiChoiceParser(mcq, item);
+					parser.parse();
+					question = mcq;
 				}
 				else
 				{
@@ -100,7 +113,7 @@ public class BlackboardParser
 				}
 			}
 			
-			questions.add(question);
+			if (question != null) questions.add(question);
 		}
 		
 		return questions;
@@ -111,17 +124,17 @@ public class BlackboardParser
 	 * @param question
 	 * @param presentation
 	 */
-	private void parseItemMetadata(Question question, Element presentation)
+	private String getQuestionType(Element presentation)
 	{
 		for (int i = 0; i < presentation.getChildCount(); i++)
 		{
 			Element elem = (Element) presentation.getChild(i);
 			if (elem.getQualifiedName().equals("bbmd_questiontype"))
 			{
-				question.setType(elem.getValue());
-				break;
+				return elem.getValue();
 			}
 		}
+		return null;
 	}
 	
 }

@@ -7,8 +7,8 @@ public class Question {
 	public static final String ANSWER_TOLERANCE_NUMERIC = "numeric";
 	public static final String ANSWER_TOLERANCE_PERCENT = "percent";
 	
-	private String type; // if we're working only with Calculated questions, then this field is useless, but kept just in case
-	private String text;
+	protected String type;
+	protected String text;
 	private String formulaLatex;
 	private String formulaAscii;
 	private String answerToleranceType; // this should be either the NUMERIC or PERCENT constants

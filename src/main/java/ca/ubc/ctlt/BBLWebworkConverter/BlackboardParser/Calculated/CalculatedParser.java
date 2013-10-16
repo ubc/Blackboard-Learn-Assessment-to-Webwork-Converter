@@ -3,6 +3,7 @@ package ca.ubc.ctlt.BBLWebworkConverter.BlackboardParser.Calculated;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import nu.xom.Element;
+import ca.ubc.ctlt.BBLWebworkConverter.Assessment.CalculatedQuestion;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Question;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Variable;
 import ca.ubc.ctlt.BBLWebworkConverter.BlackboardParser.QuestionParser;
@@ -11,7 +12,7 @@ import fmath.conversion.ConvertFromMathMLToLatex;
 public class CalculatedParser extends QuestionParser
 {
 
-	public CalculatedParser(Question question, Element questionRoot)
+	public CalculatedParser(CalculatedQuestion question, Element questionRoot)
 	{
 		super(question, questionRoot);
 	}
@@ -44,7 +45,7 @@ public class CalculatedParser extends QuestionParser
 	{
 		// need to get <mat_formattedtext> which is under <flow><flow><flow><material><mat_extension>
 		Element formattedtext = (Element) presentation.getChild(0).getChild(0).getChild(0).getChild(0).getChild(0).getChild(0);
-		question.setText(formattedtext.getValue());
+		getQuestion().setText(formattedtext.getValue());
 	}
 	
 	/**
@@ -65,34 +66,34 @@ public class CalculatedParser extends QuestionParser
 				formula = formula.replace(" xmlns=\"http://www.w3.org/1998/Math/MathML\"", "");	// fmath converter doesn't like xmlns
 				formula = StringEscapeUtils.unescapeHtml4(formula); // convert html entities back into regular characters
 				formula = ConvertFromMathMLToLatex.convertToLatex(formula);
-				question.setFormulaLatex(formula);
+				getQuestion().setFormulaLatex(formula);
 			}
 			else if (name.equals("vars"))
 			{
 				parseVars(child);
-				question.setFormulaAscii(FormulaParser.parseToAsciiMath(question));
+				getQuestion().setFormulaAscii(FormulaParser.parseToAsciiMath(getQuestion()));
 			}
 			else if (name.equals("answer_tolerance"))
 			{
 				String toleranceType = child.getAttributeValue("type");
 				if (toleranceType.equals(Question.ANSWER_TOLERANCE_NUMERIC))
 				{
-					question.setAnswerToleranceType(Question.ANSWER_TOLERANCE_NUMERIC);
+					getQuestion().setAnswerToleranceType(Question.ANSWER_TOLERANCE_NUMERIC);
 				}
 				else if (toleranceType.equals(Question.ANSWER_TOLERANCE_PERCENT))
 				{
-					question.setAnswerToleranceType(Question.ANSWER_TOLERANCE_PERCENT);
+					getQuestion().setAnswerToleranceType(Question.ANSWER_TOLERANCE_PERCENT);
 				}
 				else
 				{
 					System.out.println("Warning: Unknown answer tolerance type");
 				}
-				question.setAnswerTolerance(Double.parseDouble(child.getValue()));
+				getQuestion().setAnswerTolerance(Double.parseDouble(child.getValue()));
 			}
 			else if (name.equals("answer_scale"))
 			{
 				int decimalPlace = Integer.parseInt(child.getValue());
-				question.setAnswerDecimalPlaces(decimalPlace);
+				getQuestion().setAnswerDecimalPlaces(decimalPlace);
 			}
 		}
 	}
@@ -132,8 +133,14 @@ public class CalculatedParser extends QuestionParser
 			variable.setDecimalPlaces(varScale);
 			variable.setMax(Double.parseDouble(max.getValue()));
 			variable.setMin(Double.parseDouble(min.getValue()));
-			question.addVariable(variable);
+			getQuestion().addVariable(variable);
 		}
+	}
+	
+	@Override
+	public CalculatedQuestion getQuestion()
+	{
+		return (CalculatedQuestion) super.getQuestion();
 	}
 	
 }

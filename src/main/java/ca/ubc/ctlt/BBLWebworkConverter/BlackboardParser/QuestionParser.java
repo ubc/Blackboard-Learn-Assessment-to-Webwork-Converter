@@ -5,7 +5,7 @@ import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Question;
 
 public abstract class QuestionParser
 {
-	protected Question question;
+	private Question question;
 	protected Element questionRoot;
 	
 	public QuestionParser(Question question, Element questionRoot)

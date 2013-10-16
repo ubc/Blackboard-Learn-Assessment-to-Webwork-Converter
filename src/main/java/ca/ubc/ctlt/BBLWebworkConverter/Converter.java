@@ -3,7 +3,10 @@ package ca.ubc.ctlt.BBLWebworkConverter;
 import java.io.File;
 import java.util.List;
 
+import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Choice;
+import ca.ubc.ctlt.BBLWebworkConverter.Assessment.MultiChoiceQuestion;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Question;
+import ca.ubc.ctlt.BBLWebworkConverter.Assessment.QuestionTypes;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Variable;
 import ca.ubc.ctlt.BBLWebworkConverter.BlackboardParser.BlackboardParser;
 
@@ -34,14 +37,27 @@ public class Converter
 			System.out.println("Question: ");
 			System.out.println(" Text: " + q.getText());
 			System.out.println(" Type: " + q.getType());
-			System.out.println(" Latex Formula: " + q.getFormulaLatex());
-			System.out.println(" Ascii Formula: " + q.getFormulaAscii());
-			System.out.println(" Answer Tolerance: " + q.getAnswerToleranceType() + " " + q.getAnswerTolerance());
-			System.out.println(" Answer Decimal Place: " + q.getAnswerDecimalPlaces());
-			System.out.println(" Variables: ");
-			for (Variable v : q.getFormulaVars().values())
+			if (q.getType().equals(QuestionTypes.CALCULATED))
 			{
-				System.out.println("  " + v.getName() + " - Max: " + v.getMax() + " Min: " + v.getMin() + " Decimal Place: " + v.getDecimalPlaces());
+				System.out.println(" Latex Formula: " + q.getFormulaLatex());
+				System.out.println(" Ascii Formula: " + q.getFormulaAscii());
+				System.out.println(" Answer Tolerance: " + q.getAnswerToleranceType() + " " + q.getAnswerTolerance());
+				System.out.println(" Answer Decimal Place: " + q.getAnswerDecimalPlaces());
+				System.out.println(" Variables: ");
+				for (Variable v : q.getFormulaVars().values())
+				{
+					System.out.println("  " + v.getName() + " - Max: " + v.getMax() + " Min: " + v.getMin() + " Decimal Place: " + v.getDecimalPlaces());
+				}
+			}
+			else
+			{
+				MultiChoiceQuestion mcq = (MultiChoiceQuestion) q;
+				System.out.println(" Choices: ");
+				for (Choice c : mcq.getChoices())
+				{
+					System.out.println("  " + c.getIdent() + " " + c.isCorrect() + " " + c.getText());
+				}
+				
 			}
 		}
 	}
