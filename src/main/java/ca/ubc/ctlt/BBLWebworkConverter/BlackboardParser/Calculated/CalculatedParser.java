@@ -32,6 +32,10 @@ public class CalculatedParser extends QuestionParser
 			{
 				parseItemprocExtension(tmpElem);
 			}
+			else if (elemName.equals("itemfeedback"))
+			{ // parse messages for the user when they answer the question correctly or incorrectly
+				parseItemfeedback(tmpElem);
+			}
 		}
 		return null;
 	}

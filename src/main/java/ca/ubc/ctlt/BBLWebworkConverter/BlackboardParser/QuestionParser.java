@@ -36,4 +36,19 @@ public abstract class QuestionParser
 		this.questionRoot = questionRoot;
 	}
 
+	protected void parseItemfeedback(Element itemfeedback)
+	{
+		// <flow_mat><flow_mat><material><mat_extension><mat_formattedtext>
+		String msg = itemfeedback.getChild(0).getChild(0).getChild(0).getChild(0).getChild(0).getValue();
+		if (itemfeedback.getAttributeValue("ident").equals("correct"))
+		{
+			getQuestion().setCorrectMessage(msg);
+		}
+		else if (itemfeedback.getAttributeValue("ident").equals("incorrect"))
+		{
+			getQuestion().setIncorrectMessage(msg);
+		}
+	}
+
+	
 }

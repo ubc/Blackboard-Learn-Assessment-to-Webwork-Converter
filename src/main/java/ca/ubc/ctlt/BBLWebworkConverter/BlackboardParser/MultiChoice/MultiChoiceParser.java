@@ -29,6 +29,10 @@ public class MultiChoiceParser extends QuestionParser
 			{ // parse which choice is correct
 				parseResprocessing(tmpElem);
 			}
+			else if (elemName.equals("itemfeedback"))
+			{ // parse messages for the user when they answer the question correctly or incorrectly
+				parseItemfeedback(tmpElem);
+			}
 		}
 		return null;
 	}
@@ -90,11 +94,15 @@ public class MultiChoiceParser extends QuestionParser
 	private void parseResponses(Element responses)
 	{
 		// go past <response_lid><render_choice> for the list of <flow> describing each choice
-		Element blocks = (Element) responses.getChild(0).getChild(0);
+		Element renderchoice = (Element) responses.getChild(0).getChild(0);
+		if (renderchoice.getAttributeValue("shuffle").equals("Yes"))
+		{ // need to randomize the choices when presenting to user
+			getQuestion().setRandomize(true);
+		}
 		// should now go through a list of <flow_label>, each of which describes a choice
-		for (int i = 0; i < blocks.getChildCount(); i++)
+		for (int i = 0; i < renderchoice.getChildCount(); i++)
 		{
-			Element fl = (Element) blocks.getChild(i);
+			Element fl = (Element) renderchoice.getChild(i);
 			Choice choice = new Choice();
 			// <response_label>
 			Element rl = (Element) fl.getChild(0);

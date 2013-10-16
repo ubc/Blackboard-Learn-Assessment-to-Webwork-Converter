@@ -38,6 +38,8 @@ public class Converter
 			System.out.println("Question: ");
 			System.out.println(" Text: " + q.getText());
 			System.out.println(" Type: " + q.getType());
+			System.out.println(" Correct: " + q.getCorrectMessage());
+			System.out.println(" Incorrect: " + q.getIncorrectMessage());
 			if (q.getType().equals(QuestionTypes.CALCULATED))
 			{
 				CalculatedQuestion cq = (CalculatedQuestion) q;
