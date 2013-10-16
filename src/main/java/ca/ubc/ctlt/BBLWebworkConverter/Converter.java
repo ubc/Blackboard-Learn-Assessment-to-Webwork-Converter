@@ -3,6 +3,7 @@ package ca.ubc.ctlt.BBLWebworkConverter;
 import java.io.File;
 import java.util.List;
 
+import ca.ubc.ctlt.BBLWebworkConverter.Assessment.CalculatedQuestion;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Choice;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.MultiChoiceQuestion;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Question;
@@ -39,12 +40,13 @@ public class Converter
 			System.out.println(" Type: " + q.getType());
 			if (q.getType().equals(QuestionTypes.CALCULATED))
 			{
-				System.out.println(" Latex Formula: " + q.getFormulaLatex());
-				System.out.println(" Ascii Formula: " + q.getFormulaAscii());
-				System.out.println(" Answer Tolerance: " + q.getAnswerToleranceType() + " " + q.getAnswerTolerance());
-				System.out.println(" Answer Decimal Place: " + q.getAnswerDecimalPlaces());
+				CalculatedQuestion cq = (CalculatedQuestion) q;
+				System.out.println(" Latex Formula: " + cq.getFormulaLatex());
+				System.out.println(" Ascii Formula: " + cq.getFormulaAscii());
+				System.out.println(" Answer Tolerance: " + cq.getAnswerToleranceType() + " " + cq.getAnswerTolerance());
+				System.out.println(" Answer Decimal Place: " + cq.getAnswerDecimalPlaces());
 				System.out.println(" Variables: ");
-				for (Variable v : q.getFormulaVars().values())
+				for (Variable v : cq.getFormulaVars().values())
 				{
 					System.out.println("  " + v.getName() + " - Max: " + v.getMax() + " Min: " + v.getMin() + " Decimal Place: " + v.getDecimalPlaces());
 				}

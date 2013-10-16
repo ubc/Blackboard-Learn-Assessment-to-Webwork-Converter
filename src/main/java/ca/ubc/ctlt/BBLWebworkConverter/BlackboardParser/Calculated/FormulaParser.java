@@ -3,7 +3,7 @@ package ca.ubc.ctlt.BBLWebworkConverter.BlackboardParser.Calculated;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Question;
+import ca.ubc.ctlt.BBLWebworkConverter.Assessment.CalculatedQuestion;
 
 public class FormulaParser
 {
@@ -28,7 +28,7 @@ public class FormulaParser
 	 * @param formula
 	 * @return
 	 */
-	public static String parseToAsciiMath(Question question)
+	public static String parseToAsciiMath(CalculatedQuestion question)
 	{
 		String formula = question.getFormulaLatex();
 		// prepend $ to variables, this must be done before replaceDirectMapping
@@ -99,7 +99,7 @@ public class FormulaParser
 		return formula;
 	}
 	
-	private static String parseVars(Question question, String formula)
+	private static String parseVars(CalculatedQuestion question, String formula)
 	{
 		for (String var : question.getFormulaVars().keySet())
 		{
