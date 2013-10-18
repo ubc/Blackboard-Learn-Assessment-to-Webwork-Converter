@@ -29,7 +29,7 @@ public class HtmlTexConverter {
         return text.replaceAll("<span.*?>(.*?)</span>", "$1").replaceAll("<span.*?>(.*?)</span>", "$1");
     }
 
-    public String convert(String html) {
+    public static String convert(String html) {
         Document doc = Jsoup.parseBodyFragment(html);
 
         Element body = doc.body();
@@ -37,7 +37,7 @@ public class HtmlTexConverter {
         return parse(body);
     }
 
-    public String parse(Node element) {
+    public static String parse(Node element) {
         List<Node> children = element.childNodes();
         StringBuffer buf = new StringBuffer();
 

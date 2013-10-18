@@ -10,7 +10,9 @@ import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Question;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.QuestionTypes;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Variable;
 import ca.ubc.ctlt.BBLWebworkConverter.BlackboardParser.BlackboardParser;
-import ca.ubc.ctlt.BBLWebworkConverter.PGGenerator.PGGenerator;
+import ca.ubc.ctlt.BBLWebworkConverter.PGBuilder.CalculatedQuestionAdapter;
+import ca.ubc.ctlt.BBLWebworkConverter.PGBuilder.PGBuilder;
+import ca.ubc.ctlt.BBLWebworkConverter.PGBuilder.QuestionAdapter;
 
 public class Converter
 {
@@ -34,6 +36,7 @@ public class Converter
 		// parse the file into intermediate Assessment data structure
 		BlackboardParser parser = new BlackboardParser(file);
 		List<Question> questions = parser.getQuestions();
+        QuestionAdapter adapter = null;
 		for (Question q : questions)
 		{
 			System.out.println("Question: ");
@@ -53,6 +56,7 @@ public class Converter
 				{
 					System.out.println("  " + v.getName() + " - Max: " + v.getMax() + " Min: " + v.getMin() + " Decimal Place: " + v.getDecimalPlaces());
 				}
+                adapter = new CalculatedQuestionAdapter(cq);
 			}
 			else
 			{
@@ -66,17 +70,16 @@ public class Converter
 			}
 
             // generate question
-            HtmlTexConverter converter = new HtmlTexConverter();
-            PGGenerator generator = new PGGenerator(q, converter);
-            generator.addMacor("PGstandard.pl");
-            generator.addMacor("MathObjects.pl");
-            generator.addMacor("PGML.pl");
-            generator.addMacor("PGcourse.pl");
-            generator.addMacor("PGcourse.pl");
-            generator.addMacor("parserRadioButtons.pl");
+            PGBuilder builder = new PGBuilder(adapter);
+            builder.addMacro("PGstandard.pl")
+                    .addMacro("MathObjects.pl")
+                    .addMacro("PGML.pl")
+                    .addMacro("PGcourse.pl")
+                    .addMacro("PGcourse.pl")
+                    .addMacro("parserRadioButtons.pl");
 
             System.out.println("----------------   begin of problem --------------");
-            System.out.println(generator.generate());
+            System.out.println(builder.getProblem().toString());
             System.out.println("----------------   end of problem --------------");
         }
 	}
