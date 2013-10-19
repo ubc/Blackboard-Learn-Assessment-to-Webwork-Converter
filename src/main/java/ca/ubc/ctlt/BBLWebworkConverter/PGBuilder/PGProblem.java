@@ -50,10 +50,6 @@ public class PGProblem {
             pgText.append(setup + LF + LF);
         }
 
-//        if ("Multiple".equals(question.getType())) {
-//            pgText.append("$mc = RadioButtons()");
-//        }
-
         // problem text and answers
         pgText.append("TEXT(beginproblem());" + LF);
         pgText.append("#####################################" + LF);
@@ -63,9 +59,6 @@ public class PGProblem {
         pgText.append(question + LF);
         pgText.append(LF);
 
-        // print calculated question response field
-
-
         if (null != answer) {
             pgText.append(answer + LF);
         }
@@ -73,13 +66,6 @@ public class PGProblem {
         pgText.append("END_PGML" + LF);
         pgText.append("#####################################" + LF);
 
-        // if the question is multiple choice, we have to use old style, PGML don't support it.
-//        if ("Multiple".equals(question.getType())) {
-//            pgText.append("BEGIN_TEXT").append(LF);
-//            pgText.append("\\{ $mc->buttons() \\}").append(LF);
-//            pgText.append("END_TEXT").append(LF);
-//            pgText.append("ANS( $mc->cmp() );").append(LF);
-//        }
         if (null != answerNoPGML) {
             pgText.append(answerNoPGML + LF);
         }

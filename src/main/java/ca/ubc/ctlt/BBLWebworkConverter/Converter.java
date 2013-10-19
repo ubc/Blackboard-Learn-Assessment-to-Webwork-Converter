@@ -11,6 +11,7 @@ import ca.ubc.ctlt.BBLWebworkConverter.Assessment.QuestionTypes;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Variable;
 import ca.ubc.ctlt.BBLWebworkConverter.BlackboardParser.BlackboardParser;
 import ca.ubc.ctlt.BBLWebworkConverter.PGBuilder.CalculatedQuestionAdapter;
+import ca.ubc.ctlt.BBLWebworkConverter.PGBuilder.MultipleChoiceQuestionAdapter;
 import ca.ubc.ctlt.BBLWebworkConverter.PGBuilder.PGBuilder;
 import ca.ubc.ctlt.BBLWebworkConverter.PGBuilder.QuestionAdapter;
 
@@ -66,7 +67,7 @@ public class Converter
 				{
 					System.out.println("  " + c.getIdent() + " " + c.isCorrect() + " " + c.getText());
 				}
-				
+                adapter = new MultipleChoiceQuestionAdapter(mcq);
 			}
 
             // generate question
