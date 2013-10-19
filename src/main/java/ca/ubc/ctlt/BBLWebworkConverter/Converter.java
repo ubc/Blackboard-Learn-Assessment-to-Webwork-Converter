@@ -59,7 +59,7 @@ public class Converter
 				}
                 adapter = new CalculatedQuestionAdapter(cq);
 			}
-			else
+			else if (q.getType().equals(QuestionTypes.MULTIPLE_CHOICE))
 			{
 				MultiChoiceQuestion mcq = (MultiChoiceQuestion) q;
 				System.out.println(" Choices: ");
@@ -68,7 +68,9 @@ public class Converter
 					System.out.println("  " + c.getIdent() + " " + c.isCorrect() + " " + c.getText());
 				}
                 adapter = new MultipleChoiceQuestionAdapter(mcq);
-			}
+			} else {
+                throw new RuntimeException("Unknown question type!");
+            }
 
             // generate question
             PGBuilder builder = new PGBuilder(adapter);
