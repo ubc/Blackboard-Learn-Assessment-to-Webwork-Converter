@@ -1,7 +1,13 @@
 package ca.ubc.ctlt.BBLWebworkConverter;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
 
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.CalculatedQuestion;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Choice;
@@ -34,8 +40,59 @@ public class Converter
 			System.out.println("Could not find file: " + file.getPath());
 			return;
 		}
+		// the export should comes in a zip file
+		ZipFile zip;
+		try
+		{
+			zip = new ZipFile(file);
+		} catch (ZipException e)
+		{
+			System.out.println("Zip format error. " + e.getMessage());
+			return;
+		} catch (IOException e)
+		{
+			System.out.println("File i/o error. " + e.getMessage());
+			return;
+		}
+		// look for the xml file with the questions
+	    Enumeration<? extends ZipEntry> entries = zip.entries();
+		BlackboardParser parser = null;
+	    while (entries.hasMoreElements())
+	    {
+	        ZipEntry entry = entries.nextElement();
+	        String name = entry.getName();
+	        if (!name.substring(name.length() - 3).equalsIgnoreCase("dat"))
+	        { // skip files that don't have a dat extension
+	        	continue;
+	        }
+	        InputStream stream;
+			try
+			{
+				stream = zip.getInputStream(entry);
+			} catch (IOException e)
+			{
+				System.out.println("Error reading file in zip: " + name);
+				continue;
+			}
+			// ask the parser if this is the file we're looking for
+	        parser = new BlackboardParser(stream);
+	        if (parser.validate()) break; // this is the file we're looking for
+	    }
+	    if (parser == null || !parser.validate())
+	    { // either no entries or couldn't find the correct question xml file
+	    	System.out.println("Could not file questions xml in zip file.");
+	    	return;
+	    }
+	    // cleanup 
+	    try
+		{
+			zip.close();
+		} catch (IOException e)
+		{ // does't matter what exceptions is thrown at this point
+			e.printStackTrace();
+		}
+
 		// parse the file into intermediate Assessment data structure
-		BlackboardParser parser = new BlackboardParser(file);
 		List<Question> questions = parser.getQuestions();
         QuestionAdapter adapter = null;
 		for (Question q : questions)

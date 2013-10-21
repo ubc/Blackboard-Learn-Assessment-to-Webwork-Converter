@@ -1,7 +1,10 @@
 package ca.ubc.ctlt.BBLWebworkConverter.BlackboardParser;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,11 +24,16 @@ public class BlackboardParser
 {
 	private Document doc;
 	
-	public BlackboardParser(File file)
+	public BlackboardParser(File file) throws FileNotFoundException
 	{		
+		this(new FileInputStream(file));
+	}
+	
+	public BlackboardParser(InputStream input)
+	{
 		Builder builder = new Builder();
 		try {
-			doc = builder.build(file);
+			doc = builder.build(input);
 		} catch (ValidityException e) {
 			e.printStackTrace();
 		} catch (ParsingException e) {
@@ -33,7 +41,16 @@ public class BlackboardParser
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+	}
+	
+	public boolean validate()
+	{
+		// check that we're reading the questions export
+		if (doc.getRootElement().getQualifiedName().equals("questestinterop"))
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	public List<Question> getQuestions()
