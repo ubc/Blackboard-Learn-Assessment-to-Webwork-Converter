@@ -95,9 +95,11 @@ public class Converter
 		// parse the file into intermediate Assessment data structure
 		List<Question> questions = parser.getQuestions();
         QuestionAdapter adapter = null;
+        System.out.println("Title: " + parser.getTitle());
 		for (Question q : questions)
 		{
 			System.out.println("Question: ");
+			System.out.println(" Title: " + q.getTitle());
 			System.out.println(" Text: " + q.getText());
 			System.out.println(" Type: " + q.getType());
 			System.out.println(" Correct: " + q.getCorrectMessage());

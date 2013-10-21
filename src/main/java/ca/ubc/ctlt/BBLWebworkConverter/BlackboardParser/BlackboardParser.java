@@ -23,6 +23,7 @@ import nu.xom.ValidityException;
 public class BlackboardParser 
 {
 	private Document doc;
+	private String title = "";
 	
 	public BlackboardParser(File file) throws FileNotFoundException
 	{		
@@ -152,6 +153,21 @@ public class BlackboardParser
 			}
 		}
 		return null;
+	}
+
+	public String getTitle()
+	{
+		if (title.isEmpty())
+		{
+			Element assessment = (Element) doc.getRootElement().getChild(0);
+			title = assessment.getAttributeValue("title");
+		}
+		return title;
+	}
+
+	public void setTitle(String title)
+	{
+		this.title = title;
 	}
 	
 }

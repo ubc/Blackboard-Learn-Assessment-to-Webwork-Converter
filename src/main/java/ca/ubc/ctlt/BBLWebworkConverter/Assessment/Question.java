@@ -5,6 +5,7 @@ public class Question {
 	public static final String ANSWER_TOLERANCE_NUMERIC = "numeric";
 	public static final String ANSWER_TOLERANCE_PERCENT = "percent";
 	
+	protected String title;
 	protected String type;
 	protected String text;
 	
@@ -42,6 +43,14 @@ public class Question {
 	public void setCorrectMessage(String correctMessage)
 	{
 		this.correctMessage = correctMessage;
+	}
+	public String getTitle()
+	{
+		return title;
+	}
+	public void setTitle(String title)
+	{
+		this.title = title;
 	}
 
 	

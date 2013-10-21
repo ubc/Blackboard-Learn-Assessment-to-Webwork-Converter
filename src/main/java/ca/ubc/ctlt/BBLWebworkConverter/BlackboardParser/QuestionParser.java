@@ -12,6 +12,7 @@ public abstract class QuestionParser
 	{
 		setQuestion(question);
 		setQuestionRoot(questionRoot);
+		parseQuestionTitle();
 	}
 	
 	public abstract Question parse();
@@ -48,6 +49,11 @@ public abstract class QuestionParser
 		{
 			getQuestion().setIncorrectMessage(msg);
 		}
+	}
+	
+	protected void parseQuestionTitle()
+	{
+		question.setTitle(getQuestionRoot().getAttributeValue("title"));
 	}
 
 	
