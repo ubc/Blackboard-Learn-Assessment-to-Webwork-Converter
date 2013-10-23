@@ -67,6 +67,8 @@ public class HtmlTexConverter {
                     format = "[`_{%s}`]";
                 } else if ("em".equals(tagName)) {
                     format = "_%s_";
+                } else if ("p".equals(tagName)) {
+                    format = "%s\n\n";
                 }
 
                 text = String.format(format, text);
