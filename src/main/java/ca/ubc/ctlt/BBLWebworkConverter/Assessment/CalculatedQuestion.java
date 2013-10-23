@@ -68,4 +68,20 @@ public class CalculatedQuestion extends Question
 		this.unit = unit;
 	}
 
+    @Override
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        for (Variable v : this.getFormulaVars().values()) {
+            buffer.append(v.getName() + " - Max: " + v.getMax() + " Min: " + v.getMin() + " Decimal Place: " + v.getDecimalPlaces() + ", ");
+        }
+        return "CalculatedQuestion{" +
+                "Latex Formula='" + formulaLatex + '\'' +
+                ", Ascii Formula='" + formulaAscii + '\'' +
+                ", Answer Tolerance Type='" + answerToleranceType + '\'' +
+                ", Answer Tolerance=" + answerTolerance +
+                ", Answer Decimal Place=" + answerDecimalPlaces +
+                ", unit='" + unit + '\'' +
+                ", formulaVars=" + buffer.toString() +
+                "} " + super.toString();
+    }
 }

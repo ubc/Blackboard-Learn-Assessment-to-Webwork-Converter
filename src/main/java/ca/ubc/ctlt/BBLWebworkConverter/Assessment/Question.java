@@ -53,5 +53,14 @@ public class Question {
 		this.title = title;
 	}
 
-	
+    @Override
+    public String toString() {
+        return "Question{" +
+                "title='" + title + '\'' +
+                ", type='" + type + '\'' +
+                ", text='" + text + '\'' +
+                ", incorrectMessage='" + incorrectMessage + '\'' +
+                ", correctMessage='" + correctMessage + '\'' +
+                '}';
+    }
 }

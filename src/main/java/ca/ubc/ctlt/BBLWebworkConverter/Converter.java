@@ -96,34 +96,16 @@ public class Converter
         PGZipper zipper = new PGZipper();
 		for (Question q : questions)
 		{
-			System.out.println("Question: ");
-			System.out.println(" Title: " + q.getTitle());
-			System.out.println(" Text: " + q.getText());
-			System.out.println(" Type: " + q.getType());
-			System.out.println(" Correct: " + q.getCorrectMessage());
-			System.out.println(" Incorrect: " + q.getIncorrectMessage());
 			if (q.getType().equals(QuestionTypes.CALCULATED))
 			{
 				CalculatedQuestion cq = (CalculatedQuestion) q;
-				System.out.println(" Latex Formula: " + cq.getFormulaLatex());
-				System.out.println(" Ascii Formula: " + cq.getFormulaAscii());
-				System.out.println(" Answer Tolerance: " + cq.getAnswerToleranceType() + " " + cq.getAnswerTolerance());
-				System.out.println(" Answer Decimal Place: " + cq.getAnswerDecimalPlaces());
-				System.out.println(" Variables: ");
-				for (Variable v : cq.getFormulaVars().values())
-				{
-					System.out.println("  " + v.getName() + " - Max: " + v.getMax() + " Min: " + v.getMin() + " Decimal Place: " + v.getDecimalPlaces());
-				}
+                System.out.println(cq.toString());
                 adapter = new CalculatedQuestionAdapter(cq);
 			}
 			else if (q.getType().equals(QuestionTypes.MULTIPLE_CHOICE))
 			{
 				MultiChoiceQuestion mcq = (MultiChoiceQuestion) q;
-				System.out.println(" Choices: ");
-				for (Choice c : mcq.getChoices())
-				{
-					System.out.println("  " + c.getIdent() + " " + c.isCorrect() + " " + c.getText());
-				}
+                System.out.println(mcq.toString());
                 adapter = new MultipleChoiceQuestionAdapter(mcq);
 			} else {
                 throw new RuntimeException("Unknown question type!");
