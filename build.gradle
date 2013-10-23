@@ -15,11 +15,13 @@ dependencies {
             'org.apache.commons:commons-lang3:3.1',
             'org.jdom:jdom:1.1.3',
             'org.jsoup:jsoup:1.7.2',
+            'org.apache.commons:commons-compress:1.5',
             fileTree(dir: 'lib', include: '*.jar')
     runtime 'commons-codec:commons-codec:1.8',
             'org.apache.commons:commons-lang3:3.1',
             'org.jdom:jdom:1.1.3',
             'org.jsoup:jsoup:1.7.2',
+            'org.apache.commons:commons-compress:1.5',
             fileTree(dir: 'lib', include: '*.jar')
     testCompile 'org.testng:testng:6.8.7',
             'org.mockito:mockito-all:1.9.5',

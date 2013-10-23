@@ -71,4 +71,9 @@ public class MultipleChoiceQuestionAdapter implements QuestionAdapter {
     public String convertSolution() {
         return null;
     }
+
+    @Override
+    public String getTitle() {
+        return question.getTitle();
+    }
 }

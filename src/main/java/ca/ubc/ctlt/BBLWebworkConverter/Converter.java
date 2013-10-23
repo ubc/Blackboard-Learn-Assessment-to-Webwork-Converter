@@ -16,10 +16,7 @@ import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Question;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.QuestionTypes;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Variable;
 import ca.ubc.ctlt.BBLWebworkConverter.BlackboardParser.BlackboardParser;
-import ca.ubc.ctlt.BBLWebworkConverter.PGBuilder.CalculatedQuestionAdapter;
-import ca.ubc.ctlt.BBLWebworkConverter.PGBuilder.MultipleChoiceQuestionAdapter;
-import ca.ubc.ctlt.BBLWebworkConverter.PGBuilder.PGBuilder;
-import ca.ubc.ctlt.BBLWebworkConverter.PGBuilder.QuestionAdapter;
+import ca.ubc.ctlt.BBLWebworkConverter.PGBuilder.*;
 
 public class Converter
 {
@@ -96,6 +93,7 @@ public class Converter
 		List<Question> questions = parser.getQuestions();
         QuestionAdapter adapter = null;
         System.out.println("Title: " + parser.getTitle());
+        PGZipper zipper = new PGZipper();
 		for (Question q : questions)
 		{
 			System.out.println("Question: ");
@@ -143,6 +141,10 @@ public class Converter
             System.out.println("----------------   begin of problem --------------");
             System.out.println(builder.getProblem().toString());
             System.out.println("----------------   end of problem --------------");
+
+            zipper.addProblem(builder.getProblem());
         }
+
+        zipper.pack(parser.getTitle());
 	}
 }

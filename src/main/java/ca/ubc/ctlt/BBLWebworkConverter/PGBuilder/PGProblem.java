@@ -1,5 +1,7 @@
 package ca.ubc.ctlt.BBLWebworkConverter.PGBuilder;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -8,6 +10,7 @@ import java.util.Properties;
  * Created by compass on 13-10-18.
  */
 public class PGProblem {
+    private String title;
     private Properties tags;
     private List<String> macros;
     // different section text
@@ -106,10 +109,18 @@ public class PGProblem {
         StringBuffer buffer = new StringBuffer();
 
         buffer.append("BEGIN_PGML_SOLUTION" + LF);
-        buffer.append(solution+LF);
+        buffer.append(solution + LF);
         buffer.append("END_PGML_SOLUTION" + LF);
 
         return buffer.toString();
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Properties getTags() {

@@ -10,6 +10,7 @@ public class PGBuilder {
     public PGBuilder(QuestionAdapter adapter) {
         this.adapter = adapter;
         this.problem = new PGProblem();
+        this.problem.setTitle(adapter.getTitle());
         this.problem.setSetup(adapter.convertSetup());
         this.problem.setQuestion(adapter.convertQuestion());
         this.problem.setAnswer(adapter.convertAnswer());
