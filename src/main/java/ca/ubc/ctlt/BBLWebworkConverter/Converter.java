@@ -118,6 +118,7 @@ public class Converter
 		// parse the file into intermediate Assessment data structure
 		List<Question> questions = parser.getQuestions();
         QuestionAdapter adapter = null;
+
         if (cmd.hasOption("d")) {
             System.out.println("Title: " + parser.getTitle());
         }
@@ -160,7 +161,9 @@ public class Converter
             zipper.addProblem(builder.getProblem());
         }
 
-        zipper.pack(parser.getTitle());
+        // WeBWorK doesn't like special characters in the name
+        String setName = parser.getTitle().replace("#", "").replace(" ", "_");
+        zipper.pack(setName);
 
         System.out.println("Done!");
     }
