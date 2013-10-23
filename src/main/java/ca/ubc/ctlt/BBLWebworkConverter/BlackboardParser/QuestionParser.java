@@ -39,6 +39,10 @@ public abstract class QuestionParser
 
 	protected void parseItemfeedback(Element itemfeedback)
 	{
+		if (itemfeedback.getChild(0).getChildCount() == 0)
+		{ // no feedback given
+			return;
+		}
 		// <flow_mat><flow_mat><material><mat_extension><mat_formattedtext>
 		String msg = itemfeedback.getChild(0).getChild(0).getChild(0).getChild(0).getChild(0).getValue();
 		if (itemfeedback.getAttributeValue("ident").equals("correct"))

@@ -101,11 +101,6 @@ public class Converter
 	        parser = new BlackboardParser(stream);
 	        if (parser.validate()) break; // this is the file we're looking for
 	    }
-	    if (parser == null || !parser.validate())
-	    { // either no entries or couldn't find the correct question xml file
-	    	System.out.println("Could not file questions xml in zip file.");
-	    	return;
-	    }
 	    // cleanup 
 	    try
 		{
@@ -114,6 +109,12 @@ public class Converter
 		{ // does't matter what exceptions is thrown at this point
 			e.printStackTrace();
 		}
+	    // check that the parser likes the file we chose
+	    if (parser == null || !parser.validate())
+	    { // either no entries or couldn't find the correct question xml file
+	    	System.out.println("Could not file questions xml in zip file.");
+	    	return;
+	    }
 
 		// parse the file into intermediate Assessment data structure
 		List<Question> questions = parser.getQuestions();
