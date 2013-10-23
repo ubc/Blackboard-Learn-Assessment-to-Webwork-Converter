@@ -9,4 +9,5 @@ public interface QuestionAdapter {
     public String convertAnswer();
     public String convertAnswerNoPGML();
     public String convertSolution();
+    public String getTitle();
 }

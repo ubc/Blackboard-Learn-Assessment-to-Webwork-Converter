@@ -10,29 +10,52 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.CalculatedQuestion;
-import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Choice;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.MultiChoiceQuestion;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Question;
 import ca.ubc.ctlt.BBLWebworkConverter.Assessment.QuestionTypes;
-import ca.ubc.ctlt.BBLWebworkConverter.Assessment.Variable;
 import ca.ubc.ctlt.BBLWebworkConverter.BlackboardParser.BlackboardParser;
-import ca.ubc.ctlt.BBLWebworkConverter.PGBuilder.CalculatedQuestionAdapter;
-import ca.ubc.ctlt.BBLWebworkConverter.PGBuilder.MultipleChoiceQuestionAdapter;
-import ca.ubc.ctlt.BBLWebworkConverter.PGBuilder.PGBuilder;
-import ca.ubc.ctlt.BBLWebworkConverter.PGBuilder.QuestionAdapter;
+import ca.ubc.ctlt.BBLWebworkConverter.PGBuilder.*;
+import org.apache.commons.cli.*;
 
 public class Converter
 {
 
 	public static void main(String[] args)
 	{
-		// check if file argument exists
-		if (args.length != 1)
+
+        Options options = new Options();
+
+        options.addOption("d", false, "Display debug information");
+        options.addOption("h", false, "Print help");
+
+        Option input = OptionBuilder.withArgName( "file" )
+                .hasArg()
+                .withDescription("input zip file exported from Blackboard Learn")
+                .create( "i" );
+        options.addOption(input);
+
+        CommandLineParser cliparser = new BasicParser();
+        CommandLine cmd = null;
+        try {
+            cmd = cliparser.parse(options, args);
+        } catch (ParseException e) {
+            System.err.println("Parsing failed.  Reason: " + e.getMessage());
+            printHelp(options);
+            return;
+        }
+
+        if (cmd.hasOption("h")) {
+            printHelp(options);
+            return;
+        }
+
+        // check if file argument exists
+		if (!cmd.hasOption("i"))
 		{
 			System.out.println("Please pass in an xml export file as a parameter.");
 			return;
 		}
-		String xmlPath = args[0];
+		String xmlPath = cmd.getOptionValue("i");
 		// check if file exists
 		File file = new File(xmlPath);
 		if (!file.exists())
@@ -95,37 +118,26 @@ public class Converter
 		// parse the file into intermediate Assessment data structure
 		List<Question> questions = parser.getQuestions();
         QuestionAdapter adapter = null;
-        System.out.println("Title: " + parser.getTitle());
+        if (cmd.hasOption("d")) {
+            System.out.println("Title: " + parser.getTitle());
+        }
+        PGZipper zipper = new PGZipper();
 		for (Question q : questions)
 		{
-			System.out.println("Question: ");
-			System.out.println(" Title: " + q.getTitle());
-			System.out.println(" Text: " + q.getText());
-			System.out.println(" Type: " + q.getType());
-			System.out.println(" Correct: " + q.getCorrectMessage());
-			System.out.println(" Incorrect: " + q.getIncorrectMessage());
 			if (q.getType().equals(QuestionTypes.CALCULATED))
 			{
 				CalculatedQuestion cq = (CalculatedQuestion) q;
-				System.out.println(" Latex Formula: " + cq.getFormulaLatex());
-				System.out.println(" Ascii Formula: " + cq.getFormulaAscii());
-				System.out.println(" Answer Tolerance: " + cq.getAnswerToleranceType() + " " + cq.getAnswerTolerance());
-				System.out.println(" Answer Decimal Place: " + cq.getAnswerDecimalPlaces());
-				System.out.println(" Variables: ");
-				for (Variable v : cq.getFormulaVars().values())
-				{
-					System.out.println("  " + v.getName() + " - Max: " + v.getMax() + " Min: " + v.getMin() + " Decimal Place: " + v.getDecimalPlaces());
-				}
+                if (cmd.hasOption("d")) {
+                    System.out.println(cq.toString());
+                }
                 adapter = new CalculatedQuestionAdapter(cq);
 			}
 			else if (q.getType().equals(QuestionTypes.MULTIPLE_CHOICE))
 			{
 				MultiChoiceQuestion mcq = (MultiChoiceQuestion) q;
-				System.out.println(" Choices: ");
-				for (Choice c : mcq.getChoices())
-				{
-					System.out.println("  " + c.getIdent() + " " + c.isCorrect() + " " + c.getText());
-				}
+                if (cmd.hasOption("d")) {
+                    System.out.println(mcq.toString());
+                }
                 adapter = new MultipleChoiceQuestionAdapter(mcq);
 			} else {
                 throw new RuntimeException("Unknown question type!");
@@ -140,9 +152,21 @@ public class Converter
                     .addMacro("PGcourse.pl")
                     .addMacro("parserRadioButtons.pl");
 
-            System.out.println("----------------   begin of problem --------------");
-            System.out.println(builder.getProblem().toString());
-            System.out.println("----------------   end of problem --------------");
+            if (cmd.hasOption("d")) {
+                System.out.println("----------------   begin of problem --------------");
+                System.out.println(builder.getProblem().toString());
+                System.out.println("----------------   end of problem --------------");
+            }
+            zipper.addProblem(builder.getProblem());
         }
-	}
+
+        zipper.pack(parser.getTitle());
+
+        System.out.println("Done!");
+    }
+
+    private static void printHelp(Options options) {
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("converter", options);
+    }
 }

@@ -54,6 +54,11 @@ public class CalculatedQuestionAdapter implements QuestionAdapter {
         return null;
     }
 
+    @Override
+    public String getTitle() {
+        return question.getTitle();
+    }
+
     private String replaceVariables(String text) {
         String questionText = text;
         for (Map.Entry<String, Variable> entry : question.getFormulaVars().entrySet()) {

@@ -27,4 +27,16 @@ public class MultiChoiceQuestion extends Question
 	{
 		this.randomize = randomize;
 	}
+
+    @Override
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+        for (Choice c : this.getChoices()) {
+            buffer.append(c.getIdent() + " " + c.isCorrect() + " " + c.getText() + ", ");
+        }
+        return "MultiChoiceQuestion{" +
+                "choices=" + buffer.toString() +
+                ", randomize=" + randomize +
+                "} " + super.toString();
+    }
 }
