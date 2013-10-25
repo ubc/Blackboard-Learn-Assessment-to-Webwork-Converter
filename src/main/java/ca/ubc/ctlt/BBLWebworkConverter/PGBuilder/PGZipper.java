@@ -5,6 +5,7 @@ import org.apache.commons.compress.archivers.ArchiveInputStream;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 
 import java.io.*;
@@ -38,6 +39,8 @@ public class PGZipper {
             //create ZipOutputStream to write to the zip file
             ArchiveOutputStream os = new ArchiveStreamFactory()
                     .createArchiveOutputStream(ArchiveStreamFactory.TAR, gzOut);
+            ((TarArchiveOutputStream)
+                    os).setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
 
             String directory = path + packFileName + "/";
             os.putArchiveEntry(new TarArchiveEntry(path));
